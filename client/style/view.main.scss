@@ -1,0 +1,21 @@
+
+
+.view_main {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  .component_preview {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    canvas {
+      position: relative;
+      margin: 5rem auto;
+      display: block;
+      background: gray;
+    }
+  }
+
+
+
+}
