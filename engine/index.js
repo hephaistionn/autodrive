@@ -8,7 +8,7 @@ module.exports = class Engine {
     this.timestamp = 0;
     this.cars = [];
     for(let i=0; i<config.cars; i++) {
-      this.cars.push(new Car({x:97, y:912}));
+      this.cars.push(new Car({x:600, y:912}));
     }
   }
 
@@ -33,6 +33,7 @@ module.exports = class Engine {
     this.timestamp = now;
     for(let i=0; i<this.cars.length; i++) {
       this.cars[i].update(delta);
+      this.cars[i].refreshCensors(this.imageMap);
     }
   }
 
