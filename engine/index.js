@@ -29,11 +29,12 @@ module.exports = class Engine {
 
   update() {
     const now = Date.now();
-    const delta = now - this.timestamp;
+    const dt = now - this.timestamp;
     this.timestamp = now;
     for(let i=0; i<this.cars.length; i++) {
-      this.cars[i].update(delta);
-      this.cars[i].refreshCensors(this.imageMap);
+      this.cars[i].update(dt);
+      this.cars[i].updateSensors(this.imageMap, dt);
+      this.cars[i].updateOrder();
     }
   }
 

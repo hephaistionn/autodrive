@@ -4,11 +4,12 @@ module.exports = class Car {
 
   constructor(config) {
     this.speed = 0.1;
-    this.direction = 0;
+    this.direction = Math.PI/30;
     this.x = config.x || 0;
     this.y = config.y | 0;
     this.collision = false;
-    this.censors = [
+    this.stepSensor = 0.8;
+    this.sensors = [
       {
         direction: Math.PI / 8,
         speed: 0,
@@ -16,8 +17,15 @@ module.exports = class Car {
       }
     ];
     this.matrix = [];
-    for (let i = 0; i < this.censors.length; i++) {
+    const nbSensors = this.sensors.length;
+    for (let i = 0; i < nbSensors; i++) {
       this.matrix.concat([0, 0]);
+      //symetrical censors
+      this.sensors.push({
+        direction: -this.sensors[i].direction,
+        speed: 0,
+        norm: 0
+      })
     }
   }
 
@@ -27,7 +35,7 @@ module.exports = class Car {
     this.y = this.y + (this.speed * dt) * Math.sin(this.direction);
   }
 
-  refreshCensors(imageMap) {
+  updateSensors(imageMap, dt) {
     const data = imageMap.data;
     const xInMap = Math.round(this.x);
     const yInMap = Math.round(imageMap.height-this.y);
@@ -35,6 +43,30 @@ module.exports = class Car {
     if(value<10) {
       this.collision = true;
     }
+    for(let i=0; i<this.sensors.length; i++) {
+      const dirSensor = this.sensors[i].direction+this.direction;
+
+      for(var k=0;k<800;k++) {
+        const x = this.x + this.stepSensor * k * Math.cos(dirSensor);
+        const y = this.y + this.stepSensor * k * Math.sin(dirSensor)
+        const xInMap = Math.round(x);
+        const yInMap = Math.round(imageMap.height-y);
+        const value = data[yInMap*imageMap.width*4+xInMap*4];
+        if(value<10) {
+          const dx = (x-this.x);
+          const dy = (y-this.y);
+          const norm  = Math.sqrt( dx*dx+dy*dy);
+          this.sensors[i].speed = (norm-this.sensors[i].norm)/dt;
+          this.sensors[i].norm = norm;
+          break;
+        }
+      }
+    }
+  }
+
+  updateOrder(){
+    if(this.collision) return;
+    console.log( this.sensors[0].norm);
   }
 
 

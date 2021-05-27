@@ -26,6 +26,8 @@ export default {
       const height = imageTarget.height;
       const engine = this.engine;
       const carColor = 'red';
+      const sensorColor = 'green';
+      const nbSensor =  engine.cars[0].sensors.length;
       
       function draw() {
         //ground
@@ -35,9 +37,18 @@ export default {
           contextTarget.save();
           const car = engine.cars[i];
           contextTarget.translate(car.x, (height-car.y));
-          contextTarget.rotate(car.direction);
+          contextTarget.rotate(-car.direction);
           contextTarget.fillStyle = carColor;
           contextTarget.fillRect(-5, -2.5, 10, 5);
+          //sensor
+          for(let k=0; k<nbSensor; k++){
+            const sen = car.sensors[k];
+            contextTarget.beginPath();
+            contextTarget.moveTo(0,0);
+            contextTarget.lineTo(sen.norm*Math.cos(-sen.direction), sen.norm*Math.sin(-sen.direction));//image Y must be revert
+            contextTarget.strokeStyle = sensorColor;
+            contextTarget.stroke();
+          }
           contextTarget.restore();
         }
         requestAnimationFrame(draw);
