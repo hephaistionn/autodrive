@@ -1,11 +1,15 @@
 
 const { createCanvas, loadImage } = require('canvas');
+const Car = require('./car');
 
-export default class Engine {
-
-  constructor() {
+module.exports = class Engine {
+  constructor(config) {
     this.imageMap = null;
     this.timestamp = 0;
+    this.cars = [];
+    for(let i=0; i<config.cars; i++) {
+      this.cars.push(new Car({x:97, y:912}));
+    }
   }
 
   async init(pathMap) {
@@ -27,9 +31,9 @@ export default class Engine {
     const now = Date.now();
     const delta = now - this.timestamp;
     this.timestamp = now;
-    
-    //TODO
-
+    for(let i=0; i<this.cars.length; i++) {
+      this.cars[i].update(delta);
+    }
   }
 
 };

@@ -23,23 +23,23 @@ export default {
       const imageBackgroundData = ImageBackground.data;
       const imageTargetData = imageTarget.data;
       const length = imageTarget.width * imageTarget.height;
+      const height = imageTarget.height;
       const engine = this.engine;
+      const carColor = 'red';
       
       function draw() {
-        for (let i = 0; i < length; i++) {
-          const index = i * 4;
-          if(imageBackgroundData[index]>10) {
-            imageTargetData[index+0] =  255; 
-            imageTargetData[index+1] =  255; 
-            imageTargetData[index+2] =  255; 
-          }else{
-            imageTargetData[index+0] =  0; 
-            imageTargetData[index+1] =  0; 
-            imageTargetData[index+2] =  0; 
-          }
-          imageTargetData[index+3] =  255; 
+        //ground
+        contextTarget.putImageData(ImageBackground, 0, 0);
+        //cars
+        for (let i = 0; i < engine.cars.length; i++) {
+          contextTarget.save();
+          const car = engine.cars[i];
+          contextTarget.translate(car.x, (height-car.y));
+          contextTarget.rotate(car.direction);
+          contextTarget.fillStyle = carColor;
+          contextTarget.fillRect(-5, -2.5, 10, 5);
+          contextTarget.restore();
         }
-        contextTarget.putImageData(imageTarget, 0, 0);
         requestAnimationFrame(draw);
         engine.update();
       }

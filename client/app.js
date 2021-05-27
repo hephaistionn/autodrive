@@ -9,7 +9,7 @@ for (let key in components) {
 
 window.addEventListener('load', async () => {
 
-  const engine = new Engine();
+  const engine = new Engine({cars:1});
 
   await engine.init('assets/map.png');
 
