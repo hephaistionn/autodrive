@@ -19,7 +19,7 @@ module.exports = class Engine {
     this.timestamp = 0;
     this.cars = [];
     this.bestMatrix;
-    this.bestDistance = 0
+    this.bestDistance = 0;
 
   }
 
@@ -49,9 +49,10 @@ module.exports = class Engine {
     let dt = now - this.timestamp;
     this.timestamp = now;
     for (let i = 0; i < this.cars.length; i++) {
-      this.cars[i].update(dt, this.imageMap);
       this.cars[i].updateDirection();
       this.cars[i].updateAcceleration();
+      this.cars[i].update(dt, this.imageMap);
+
     }
 
     for (let i = 0; i < this.cars.length; i++) {

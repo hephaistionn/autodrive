@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const editable = require('../../editable');
+const editable = require("../../editable");
 export default {
   props: {
     engine: Object,
@@ -37,21 +37,21 @@ export default {
           const car = engine.cars[i];
           contextTarget.translate(car.x, height - car.y);
           contextTarget.rotate(-car.bodyDirection);
-          contextTarget.fillStyle = carColor;
+          contextTarget.fillStyle = car.color;
           contextTarget.fillRect(-15, -7.5, 30, 15);
           //sensor
-          if(editable.showSensor)
-          for (let k = 0; k < nbSensor; k++) {
-            const sen = car.sensors[k];
-            contextTarget.beginPath();
-            contextTarget.moveTo(0, 0);
-            contextTarget.lineTo(
-              sen.norm * Math.cos(-sen.direction),
-              sen.norm * Math.sin(-sen.direction)
-            );
-            contextTarget.strokeStyle = sensorColor;
-            contextTarget.stroke();
-          }
+          if (editable.showSensor)
+            for (let k = 0; k < nbSensor; k++) {
+              const sen = car.sensors[k];
+              contextTarget.beginPath();
+              contextTarget.moveTo(0, 0);
+              contextTarget.lineTo(
+                sen.norm * Math.cos(-sen.direction),
+                sen.norm * Math.sin(-sen.direction)
+              );
+              contextTarget.strokeStyle = sensorColor;
+              contextTarget.stroke();
+            }
           contextTarget.restore();
         }
         requestAnimationFrame(draw);
